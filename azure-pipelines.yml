@@ -1,0 +1,33 @@
+jobs:
+  - job: Linux
+    pool:
+      vmImage: 'ubuntu-16.04'
+    steps:
+    - script: |
+        mkdir -p $HOME/.ghcup/bin && curl https://raw.githubusercontent.com/haskell/ghcup/master/ghcup > $HOME/.ghcup/bin/ghcup && chmod +x $HOME/.ghcup/bin/ghcup
+        export PATH="$HOME/.cabal/bin:$HOME/.ghcup/bin:$PATH"
+        ghcup install 8.6.5
+        ghcup set 8.6.5
+        ghcup install-cabal
+      displayName: 'Prepare system'
+    - script: |
+        export PATH="$HOME/.cabal/bin:$HOME/.ghcup/bin:$PATH"
+        cabal v2-update
+        cabal v2-build
+      displayName: 'Build'
+  - job: macOS
+    pool:
+      vmImage: 'macOS-10.14'
+    steps:
+    - script: |
+        mkdir -p $HOME/.ghcup/bin && curl https://raw.githubusercontent.com/haskell/ghcup/master/ghcup > $HOME/.ghcup/bin/ghcup && chmod +x $HOME/.ghcup/bin/ghcup
+        export PATH="$HOME/.cabal/bin:$HOME/.ghcup/bin:$PATH"
+        ghcup install 8.6.5
+        ghcup set 8.6.5
+        ghcup install-cabal
+      displayName: 'Prepare system'
+    - script: |
+        export PATH="$HOME/.cabal/bin:$HOME/.ghcup/bin:$PATH"
+        cabal v2-update
+        cabal v2-build
+      displayName: 'Build'
